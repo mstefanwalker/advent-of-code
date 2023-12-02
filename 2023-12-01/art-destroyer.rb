@@ -32,7 +32,7 @@ translated = {
     'nine' => '9',
 }
 
-File.foreach("calibration.txt") do |line|
+File.foreach "calibration.txt" do |line|
     numbers = ''
     for i in 0...line.length
         char = line[i].chr
