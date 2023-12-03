@@ -17,35 +17,31 @@ def parse_block block_part
     return block_part.split ' '
 end
 
-max_blocks = {
-    'red' => 12,
-    'green' => 13,
-    'blue' => 14,
-}
-
 sum = 0
 
 File.foreach 'games.txt' do |line|
     id, rounds = *(line.split ': ')
     id = parse_id id
     id = id.to_i
-    possible = true
+    min_blocks = {
+        'red' => 0,
+        'green' => 0,
+        'blue' => 0,
+    }
     parse_rounds rounds do |round|
-        if possible == false
-            break
-        end
         parse_round round do |block|
             number, color = parse_block block
             number = number.to_i
-            if number > max_blocks[color]
-                possible = false
-                break
+            if number > min_blocks[color]
+                min_blocks[color] = number
             end
         end
     end
-    if possible
-        sum += id
+    power = 1
+    min_blocks.each do |_,num|
+        power *= num
     end
+    sum += power
 end
 
 puts sum
